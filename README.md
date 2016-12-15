@@ -19,6 +19,14 @@ It's recommended that you also install the [GitHub Updater plugin](https://githu
 
 
 
+## Displaying a customized message to the customer
+
+Add your custom messages under `Downloads` > `Settings` > `Extensions`. There are two separate messages: one for users who already have an account, and one for users who had one newly created.
+
+Include the `[gmt_edd_user]` shortcode on your Success Page.
+
+
+
 ## How to Contribute
 
 Please read the [Contribution Guidelines](CONTRIBUTING.md).

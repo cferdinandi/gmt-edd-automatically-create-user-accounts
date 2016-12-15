@@ -50,12 +50,9 @@
 
 		// Variables
 		$user = EDD()->session->get( 'gmt_edd_user_created' );
+		$message = empty( $user ) ? edd_get_option( 'gmt_edd_user_account_already_exists', false ) : edd_get_option( 'gmt_edd_user_account_created', false );
 
-		if ( empty( $user ) ) {
-			return wpautop( 'You were already a user.', false );
-		} else {
-			return wpautop( 'You have a new account.', false );
-		}
+		return wpautop( $message, false );
 
 	}
 	add_shortcode( 'gmt_edd_user', 'gmt_edd_create_user_shortcode' );

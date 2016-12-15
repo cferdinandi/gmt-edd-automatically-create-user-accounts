@@ -1,0 +1,49 @@
+<?php
+
+
+	/**
+	 * Add settings section
+	 * @param array $sections The current sections
+	 */
+	function gmt_edd_user_accounts_settings_section( $sections ) {
+		$sections['gmt_edd_user_accounts'] = __( 'Automatic  User Accounts', 'gmt_edd' );
+		return $sections;
+	}
+	add_filter( 'edd_settings_sections_extensions', 'gmt_edd_user_accounts_settings_section' );
+
+
+
+	/**
+	 * Add settings
+	 * @param  array $settings The existing settings
+	 */
+	function gmt_edd_user_accounts_settings( $settings ) {
+
+		$empty_cart_settings = array(
+			array(
+				'id'    => 'gmt_edd_user_accounts_settings',
+				'name'  => '<strong>' . __( 'Create User Account Settings', 'gmt_edd' ) . '</strong>',
+				'desc'  => __( 'Configure Automatic User Account Settings', 'gmt_edd' ),
+				'type'  => 'header',
+			),
+			array(
+				'id'      => 'gmt_edd_user_account_already_exists',
+				'name'    => __( 'User Account Already Exists', 'gmt_edd_empty_cart' ),
+				'desc'    => __( 'Message to display when a user account already exists.', 'gmt_edd' ),
+				'type'    => 'textarea',
+				'std'     => __( '', 'gmt_edd' ),
+			),
+			array(
+				'id'      => 'gmt_edd_user_account_created',
+				'name'    => __( 'User Account Created', 'gmt_edd_empty_cart' ),
+				'desc'    => __( 'Message to display when a user account is created.', 'gmt_edd' ),
+				'type'    => 'textarea',
+				'std'     => __( 'A user account has been created for you.', 'gmt_edd' ),
+			),
+		);
+		if ( version_compare( EDD_VERSION, 2.5, '>=' ) ) {
+			$empty_cart_settings = array( 'gmt_edd_user_accounts' => $empty_cart_settings );
+		}
+		return array_merge( $settings, $empty_cart_settings );
+	}
+	add_filter( 'edd_settings_extensions', 'gmt_edd_user_accounts_settings', 999, 1 );

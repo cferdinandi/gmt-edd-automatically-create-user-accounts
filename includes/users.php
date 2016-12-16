@@ -45,8 +45,8 @@
 	 */
 	function gmt_edd_create_user_shortcode( $atts, $content = null ) {
 
-		// Get shortcode atts
-		// $user = shortcode_atts( array(), $atts );
+		// Don't run if cart is empty
+		if ( empty( EDD()->session->get( 'edd_purchase' ) ) ) return;
 
 		// Variables
 		$user = EDD()->session->get( 'gmt_edd_user_created' );

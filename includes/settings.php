@@ -38,7 +38,7 @@
 				'name'    => __( 'User Account Created', 'gmt_edd_empty_cart' ),
 				'desc'    => __( 'Message to display when a user account is created.', 'gmt_edd' ),
 				'type'    => 'textarea',
-				'std'     => __( 'A user account has been created for you.', 'gmt_edd' ),
+				'std'     => __( '', 'gmt_edd' ),
 			),
 		);
 		if ( version_compare( EDD_VERSION, 2.5, '>=' ) ) {

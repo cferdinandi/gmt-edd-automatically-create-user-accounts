@@ -7,31 +7,59 @@
 	 */
 	function gmt_edd_create_user_account_on_complete_purchase( $payment_id ) {
 
-		// Variables
+		// Get payment data
 		$payment = edd_get_payment_meta( $payment_id );
-		$user = get_user_by( 'email', sanitize_email( $payment['email'] ) );
 
-		// If user account already exists, bail
-		if ( !empty( $user ) ) return EDD()->session->set( 'gmt_edd_user_created', false );
+		// Get credentials
+		$email = sanitize_email( $payment['email'] );
+		$credentials = array(
+			'url' => edd_get_option( 'gmt_edd_user_account_url', false ),
+			'username' => edd_get_option( 'gmt_edd_user_account_username', false ),
+			'password' => edd_get_option( 'gmt_edd_user_account_password', false ),
+		);
+		if ( empty($credentials['url']) || empty($credentials['username']) || empty($credentials['password']) ) return;
 
-		// See if user account should be created
-		$create_account = 'off';
-		foreach( $payment['downloads'] as $download ) {
-			if ( get_post_meta( $download['id'], 'gmt_edd_create_user_account', true ) === 'on' ) {
-				$create_account = 'on';
-				break;
-			}
+		// Create user account
+		$create_user = wp_remote_request(
+		    rtrim( $credentials['url'], '/' ) . '/wp-json/wp/v2/users/',
+		    array(
+		        'method'    => 'POST',
+		        'headers'   => array(
+				    'Authorization' => 'Basic ' . base64_encode( $credentials['username'] . ':' . $credentials['password'] ),
+				),
+		        'body'      => array(
+					'email'    => $email,
+					'username' => $email,
+					'password' => wp_generate_password( 48, false ),
+				),
+		    )
+		);
+		$create_user_response = json_decode( wp_remote_retrieve_body($create_user) );
+
+		// If user already exists
+		if ( !empty($create_user_response->code) && $create_user_response->code === 'existing_user_login' ) {
+			EDD()->session->set( 'gmt_edd_user_created', false );
+			return;
 		}
-		if ( $create_account === 'off' ) return EDD()->session->set( 'gmt_edd_user_created', false );
 
-		// Create user
-		$user_id = wp_create_user( sanitize_email( $payment['email'] ), wp_generate_password(), sanitize_email( $payment['email'] ) );
-
-		// Store data about whether or not user was created
+		// If account was created
 		EDD()->session->set( 'gmt_edd_user_created', true );
 
 		// Emit action hook
 		do_action( 'gmt_edd_create_user_account_after', $user_id, sanitize_email( $payment['email'] ) );
+
+		// @deprecated
+		// @since 2.0.0
+		// // See if user account should be created
+		// $create_account = 'off';
+		// foreach( $payment['downloads'] as $download ) {
+		// 	if ( get_post_meta( $download['id'], 'gmt_edd_create_user_account', true ) === 'on' ) {
+		// 		$create_account = 'on';
+		// 		break;
+		// 	}
+		// }
+		// if ( $create_account === 'off' ) return EDD()->session->set( 'gmt_edd_user_created', false );
+
 
 	}
 	add_action( 'edd_complete_purchase', 'gmt_edd_create_user_account_on_complete_purchase' );

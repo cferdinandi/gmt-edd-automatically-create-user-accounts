@@ -11,7 +11,7 @@ Getting started with Reusable Content is as simple as installing a plugin:
 
 1. Upload the `gmt-edd-automatically-create-user-accounts` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the Plugins menu in WordPress.
-3. Check the box under `Create User Account` for the downloads you wish to create accounts for.
+3. Under `Downloads` > `Settings` > `Extensions`, add you site URL, username, and password for the WP REST API. For security reasons, it's recommended you use the [Application Passwords plugin](https://wordpress.org/plugins/application-passwords/).
 
 And that's it, you're done. Nice work!
 

@@ -4,7 +4,7 @@
 	 * Create the metabox
 	 */
 	function gmt_edd_user_accounts_create_metabox() {
-		add_meta_box( 'gmt_edd_user_accounts_metabox', __( 'Create User Account', 'gmt_reusable_content' ), 'gmt_edd_user_accounts_render_metabox', 'download', 'side', 'default');
+		add_meta_box( 'gmt_edd_user_accounts_metabox', __( 'User Accounts', 'gmt_reusable_content' ), 'gmt_edd_user_accounts_render_metabox', 'download', 'side', 'default');
 	}
 	add_action( 'add_meta_boxes', 'gmt_edd_user_accounts_create_metabox' );
 
@@ -23,8 +23,8 @@
 			<fieldset>
 
 				<label>
-					<input type="checkbox" name="gmt_edd_create_user_account" value="on" <?php checked( get_post_meta( $post->ID, 'gmt_edd_create_user_account', true ), 'on' ); ?>>
-					<?php _e( 'Create a user account when someone purchases this product', 'gmt_edd' ); ?>
+					<input type="checkbox" name="gmt_edd_disable_user_account" value="on" <?php checked( get_post_meta( $post->ID, 'gmt_edd_disable_user_account', true ), 'on' ); ?>>
+					<?php _e( 'Do NOT create a user account when someone purchases this product', 'gmt_edd' ); ?>
 				</label>
 
 			</fieldset>
@@ -56,10 +56,10 @@
 		}
 
 		// Make sure data was provided
-		if ( isset( $_POST['gmt_edd_create_user_account'] ) ) {
-			update_post_meta( $post->ID, 'gmt_edd_create_user_account', 'on' );
+		if ( isset( $_POST['gmt_edd_disable_user_account'] ) ) {
+			update_post_meta( $post->ID, 'gmt_edd_disable_user_account', 'on' );
 		} else {
-			update_post_meta( $post->ID, 'gmt_edd_create_user_account', 'off' );
+			update_post_meta( $post->ID, 'gmt_edd_disable_user_account', 'off' );
 		}
 
 

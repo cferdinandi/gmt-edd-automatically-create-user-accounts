@@ -5,12 +5,18 @@
 
 		// if no email, throw an error
 		if (empty($data['email']) || !is_email($data['email'])) {
-			return new WP_Error( 'code', __( 'Not a valid email address', 'gmt_edd_create_user' ) );
+			return new WP_REST_Response(array(
+				'code' => 400,
+				'message' => __( 'Not a valid email address', 'gmt_edd_create_user' ),
+			), 200);
 		}
 
 		// if user already exists
 		if (email_exists($data['email'])) {
-			return new WP_REST_Response( 'exists', 200 );
+			return new WP_REST_Response(array(
+				'code' => 200,
+				'message' => __( 'User with that email already exists', 'gmt_edd_create_user' ),
+			), 200);
 		}
 
 		// Otherwise, create user
@@ -18,7 +24,10 @@
 		$user = wp_create_user($email, wp_generate_password( 48, false ), $email);
 
 		// Return success
-		return new WP_REST_Response( array('created', $user), 200 );
+		return new WP_REST_Response(array(
+			'code' => 201,
+			'message' => __( 'User was successfully created', 'gmt_edd_create_user' ),
+		), 200);
 
 	}
 

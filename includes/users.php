@@ -45,18 +45,18 @@
 				),
 			)
 		);
-		$create_user_response = json_decode( wp_remote_retrieve_body($create_user) );
+		$create_user_response = (array) json_decode( wp_remote_retrieve_body($create_user) );
 
 		// If API request is successful
 		if ( is_array($create_user_response) && array_key_exists('code', $create_user_response) ) {
 
 			// If user already exists
-			if ($create_user_response['code'] === 200) {
+			if (intval($create_user_response['code']) === 200) {
 				EDD()->session->set( 'gmt_edd_user_created', 200 );
 			}
 
 			// If new user was created
-			else if ($create_user_response['code'] === 201) {
+			else if (intval($create_user_response['code']) === 201) {
 				EDD()->session->set( 'gmt_edd_user_created', 201 );
 			}
 
@@ -72,7 +72,7 @@
 
 		// Otherwise, throw an error
 		else {
-			EDD()->session->set( 'gmt_edd_user_created', 400 );
+			EDD()->session->set( 'gmt_edd_user_created', 401 );
 		}
 
 

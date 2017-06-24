@@ -13,7 +13,7 @@
  */
 
 // Define constants
-define( 'GMT_EDD_CREATE_USER_VERSION', '2.2.0' );
+define( 'GMT_EDD_CREATE_USER_VERSION', '2.4.1' );
 
 // Load plugin files
 require_once( plugin_dir_path( __FILE__ ) . 'includes/metabox.php' );
